@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://panker13.github.io</id>
     <title>Panker</title>
-    <updated>2021-03-23T11:45:55.699Z</updated>
+    <updated>2021-03-23T11:53:52.062Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://panker13.github.io"/>
     <link rel="self" href="https://panker13.github.io/atom.xml"/>
@@ -48,9 +48,9 @@
         <link href="https://panker13.github.io/post/guan-yu-da-jian-ge-ren-bo-ke-de-jing-yan/">
         </link>
         <updated>2021-03-23T11:11:19.000Z</updated>
-        <summary type="html"><![CDATA[<p>在我用简单的方法失败了一次后，我终于用更简单的方法搭建好了我的第一个个人博客233</p>
+        <summary type="html"><![CDATA[<p>在我用简单的方法失败了一次后，我终于用更简单的方法搭建好了我的第一个个人博客😝233</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>在我用简单的方法失败了一次后，我终于用更简单的方法搭建好了我的第一个个人博客233</p>
+        <content type="html"><![CDATA[<p>在我用简单的方法失败了一次后，我终于用更简单的方法搭建好了我的第一个个人博客😝233</p>
 <!-- more -->
 <h2 id="在210323的下午翘了体育课">在21.03.23的下午翘了体育课</h2>
 <p>这无疑是我翘过最正确的一节课了😎。其实，搭建个人博客是我上学期就一直向干的事情了（主要是受到了许多博客的可爱的看板娘的<s>诱惑</s>，并且看到yyh同学的博客，我直接心生艳羡之意），所以我其实寒假在家已经尝试过利用Github托管服务与Hexo框架搭建个人博客了，但，，，失败了。但但，天无绝人之路，在某天的中午（对，就是上面的日期），我了解到了Gridea这个自助式搭建博客神器，成功拯救了我这个<s>手残党</s></p>
@@ -66,9 +66,9 @@
         <link href="https://panker13.github.io/post/suan-fa-xue-xi-cong-poj-shang-de-fliptile-dao-kai-guan-wen-ti/">
         </link>
         <updated>2021-03-23T10:28:16.000Z</updated>
-        <summary type="html"><![CDATA[<p>是一个关于二进制枚举以及模拟递推的小问题</p>
+        <summary type="html"><![CDATA[<p>是一个关于二进制枚举以及模拟递推的小问题😳</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>是一个关于二进制枚举以及模拟递推的小问题</p>
+        <content type="html"><![CDATA[<p>是一个关于二进制枚举以及模拟递推的小问题😳</p>
 <!-- more -->
 <h3 id="写在前面本人蒟蒻写此分享来督促自己复习并与大家分享有关开关问题的一些技巧以及例题代码">写在前面：本人蒟蒻，写此分享来督促自己复习，并与大家分享有关开关问题的一些技巧以及例题代码</h3>
 <p><a href="http://poj.org/problem?id=3279">Fliptile题目链接</a><br>
