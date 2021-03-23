@@ -2,27 +2,125 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://panker13.github.io</id>
     <title>Panker</title>
-    <updated>2021-03-23T08:01:12.508Z</updated>
+    <updated>2021-03-23T10:42:54.008Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://panker13.github.io"/>
     <link rel="self" href="https://panker13.github.io/atom.xml"/>
-    <subtitle>那一天我二十一岁，在我一生的黄金时代，我有好多奢望。我想爱，想吃，还想在一瞬间变成天上半明半暗的云，后来我才知道，生活就是个缓慢受锤的过程，人一天天老下去，奢望也一天天消逝，最后变得像挨了锤的牛一样。可是我过二十一岁生日时没有预见到这一点。我觉得自己会永远生猛下去，什么也锤不了我。</subtitle>
+    <subtitle>整个世界森林里的老虎全都融化成黄油。</subtitle>
     <logo>https://panker13.github.io/images/avatar.png</logo>
     <icon>https://panker13.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Panker</rights>
     <entry>
-        <title type="html"><![CDATA[Text]]></title>
-        <id>https://panker13.github.io/post/text/</id>
-        <link href="https://panker13.github.io/post/text/">
+        <title type="html"><![CDATA[算法学习：从poj上的Fliptile到开关问题]]></title>
+        <id>https://panker13.github.io/post/suan-fa-xue-xi-cong-poj-shang-de-fliptile-dao-kai-guan-wen-ti/</id>
+        <link href="https://panker13.github.io/post/suan-fa-xue-xi-cong-poj-shang-de-fliptile-dao-kai-guan-wen-ti/">
         </link>
-        <updated>2021-03-23T07:45:26.000Z</updated>
-        <content type="html"><![CDATA[<pre><code>#include&lt;iostream&gt;
+        <updated>2021-03-23T10:28:16.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="写在前面本人蒟蒻写此分享来督促自己复习并与大家分享有关开关问题的一些技巧以及例题代码">写在前面：本人蒟蒻，写此分享来督促自己复习，并与大家分享有关开关问题的一些技巧以及例题代码</h3>
+<p><a href="http://poj.org/problem?id=3279">Fliptile题目链接</a><br>
+<a href="https://yq.aliyun.com/articles/267150">参考题解</a><br>
+<a href="https://blog.csdn.net/ac_hell/article/details/51077320">翻转问题的主要技巧以及规律</a></p>
+<h3 id="详细内容见代码及注释">详细内容见代码及注释</h3>
+<h3 id="代码如有疏漏之处敬请指出">代码（如有疏漏之处，敬请指出）😁</h3>
+<pre><code>//先用状态压缩的方法枚举第一行的翻转情况，然后通过第一行的情况来递推出第二行的情况
+//即：已知了第一行的情况了，需要通过第二行来修正第一行的情况
+//（因为第一行已经被枚举固定了，所以除了第二行之外，其他行无法修改第一行）
+//以此类推：其他所有行的情况都可以被递推出（即：是已经固定的了）
+//注意：除了最后一行，因为没有最后一行没有下一行来帮最后一行修正
+//(所以最后一行也是固定的，无法修正，最后应该检查一下最后一行是否符合题意即可)
+//关键是：由下一行来处理上一行（而且是垂直的上一行，因为只有垂直的上一行是固定的）
+
+# include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+# include&lt;cstring&gt;
 
 using namespace std;
 
+const int N = 20;
+const int INF = 0x3f3f3f3f;
+
+int n, m;
+int a[N][N];            //原始数组
+int b[N][N];            //保存翻转次数的数组
+int c[N][N];            //记录答案的数组
+int dx[] = {0, 1, 0, -1, 0}, dy[] = {0, 0, -1, 0, 1};   //其实棋子并不受下方棋子的影响
+
+bool out(int x, int y)
+{
+    if(x &lt; 0 || x &gt;= n|| y &lt; 0 || y &gt;= m)  return true;
+    else  return false;
+}
+
+int get_color(int x, int y)
+{
+    int color = a[x][y];                                //初始颜色（这里是a）
+    for(int i=0; i&lt;5; ++i)
+    {
+        int nx = x + dx[i], ny = y + dy[i];
+        if(out(nx, ny))  continue;
+        color += b[nx][ny];                             //这里是b
+    }
+    return color &amp; 1;                                   //本层翻转后的颜色（是固定的）
+    //翻转后的颜色等于初始颜色+翻转影响产生的颜色（上，下，左，右，中五个方向）
+}
+
+int flip(int s)
+{
+    for(int i=1; i&lt;=m; ++i)  b[0][i-1] = (s&gt;&gt;(m-i)) &amp; 1;
+    
+    for(int i=1; i&lt;n; ++i)
+    {
+        for(int j=0; j&lt;m; ++j)
+        {
+            if(get_color(i-1, j))   b[i][j] = 1;  
+            //由上一行的状态来递推出下一行的状态，因为上一行的上，左，右状态已经全部已知
+            //而正是由上方的状态来递推出其下方的状态
+        }
+    }
+    
+    for(int i=0; i&lt;m; ++i)   if(get_color(n-1, i))   return INF;        //检查最后一层
+    
+    int times = 0;
+    for(int i=0; i&lt;n; ++i)   for(int j=0; j&lt;m; ++j)  times += b[i][j];  //得出最小翻转次数
+    return times;
+}
+
 int main()
 {
-    cout&lt;&lt;&quot;Hello world&quot;&lt;&lt;
+    ios::sync_with_stdio(false);
+    cin.tie(0), cout.tie(0);
+    
+    cin&gt;&gt;n&gt;&gt;m;
+    
+    for(int i=0; i&lt;n; ++i)  for(int j=0; j&lt;m; ++j)   cin&gt;&gt;a[i][j];
+    
+    int ans = INF;
+    //枚举的是第一行所有可能的翻转动作（即：翻(1)或不翻(0)）
+    for(int i=0; i &lt; (1&lt;&lt;m); ++i)        //状态压缩，枚举第一行所有可能的情况 ，后面的只需递推了
+    {
+        memset(b, 0, sizeof b);         //记得初始化b
+        int t = flip(i);
+        if(t &lt; ans)
+        {
+            ans = t;
+            memcpy(c, b, sizeof b);     //复制状态
+        }
+    }
+    
+    if(ans == INF)  cout&lt;&lt;&quot;IMPOSSIBLE&quot;&lt;&lt;endl;
+    else
+    {
+        for(int i=0; i&lt;n; ++i)
+        {
+            for(int j=0; j&lt;m; ++j)
+            {
+                cout&lt;&lt;c[i][j]&lt;&lt;' ';
+            }
+            cout&lt;&lt;endl;
+        }
+    }
+    
+    return 0;
 }
 </code></pre>
 ]]></content>
