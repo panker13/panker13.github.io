@@ -9,7 +9,7 @@
 <meta name="description" content="春天的原野里，你一个人正走着，对面走来了一只可爱的小熊，浑身的毛活像天鹅绒，眼睛圆鼓鼓的。它这么对你说:你好，小姐，和我一块儿打滚玩好吗？接着，你就和小熊一起，顺着长满三叶草的山坡咕噜咕噜滚下去，整整玩了一天。">
 <meta name="theme-color" content="#000">
 <title>算法学习：从poj上的Fliptile到开关问题 | Panker</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1616734271207">
+<link rel="shortcut icon" href="/favicon.ico?v=1617802529590">
 <link rel="stylesheet" href="/media/css/gemini.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
 <link
@@ -202,7 +202,7 @@
     <div class="sidebar-item-box">
       <a href="/archives/">
         
-        <span class="site-item-stat-count">3</span>
+        <span class="site-item-stat-count">5</span>
         <span class="site-item-stat-name language" data-lan="article">文章</span>
       </a>
     </div>
@@ -1714,16 +1714,307 @@ int main()
     <div class="result" id="result">
       
       <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://panker13.github.io/post/huel_acm-di-er-xue-qi-di-liu-zhou-xian-xing-dp/"" data-c="
+          &lt;h3 id=&#34;a-最长公共子序列模板-poj-1458&#34;&gt;A - （最长公共子序列模板） POJ - 1458&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# include&amp;lt;iostream&amp;gt;
+# include&amp;lt;algorithm&amp;gt;
+# include&amp;lt;cstring&amp;gt;
+
+using namespace std;
+
+const int N = 555;
+
+char a[N], b[N];
+
+int main()
+{
+    while(cin&amp;gt;&amp;gt;a+1&amp;gt;&amp;gt;b+1)            //读入字符串a，b
+    {
+        int dp[N][N];                       //定义答案数组dp
+        //dp[i][j]是字串a的前i个字符与字串b的前j个字符的最长公共子序列
+        
+        int n = strlen(a+1), m = strlen(b+1);
+        
+        for(int i=1; i&amp;lt;=n; ++i)
+        {
+            for(int j=1; j&amp;lt;=m; ++j)
+            {
+                dp[i][j] = max(dp[i][j-1], dp[i-1][j]);     
+                //如果两个字串最后一个数不相同，就取它们之前的最长公共子序列
+
+                if(a[i]==b[j])   dp[i][j] = max(dp[i][j], dp[i-1][j-1]+1);
+                //如果最后两个字串的最后一个数相同，最长公共子序列可能为a前i-1个字符与b的前j-1个字符的最长公共子序列再+1
+            }
+        }
+        
+        cout&amp;lt;&amp;lt;dp[n][m]&amp;lt;&amp;lt;endl;           //根据定义，输出答案
+    }
+    
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;b-思维-hdu-1003&#34;&gt;B - （思维？） HDU - 1003&lt;/h3&gt;
+&lt;p&gt;主要思想：如果当前连续子序列的值为正值，那么无论它再加任何数，其总值都会大于它要加的数；如果当前连续子序列的值为负数，那么无论它再加任何数，其总值都会小于它要加的数。因此只有当当前子序列为正值的时候，该连续子序列的值才有可能增加，若为负数，则一定减小。所有当连续子序列的值为负数时，及时舍去该序列，重新再开一段序列（新序列的初始总值为0）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# include&amp;lt;iostream&amp;gt;
+# include&amp;lt;cstring&amp;gt;
+
+using namespace std;
+
+const int N = 1e5+10;
+
+struct Num
+{
+    int num, val;
+}mini;
+
+int t;
+int a[N], s[N];
+
+int main()
+{
+    cin&amp;gt;&amp;gt;t;
+    for(int i=1; i&amp;lt;=t; ++i)
+    {
+        memset(a, 0, sizeof a);
+        memset(s, 0, sizeof s);
+        
+        cout&amp;lt;&amp;lt;&amp;quot;Case &amp;quot;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;&amp;quot;:&amp;quot;&amp;lt;&amp;lt;endl;
+        int n;
+        cin&amp;gt;&amp;gt;n;
+    
+        for(int i=1; i&amp;lt;=n; ++i)   cin&amp;gt;&amp;gt;a[i];
+        
+        int l = 1, r = 1, ls = 1;
+        int ans = -2e9, res = 0;
+        for(int i=1; i&amp;lt;=n; ++i)
+        {
+            res += a[i];
+            
+            if(res &amp;gt; ans)
+            {
+                ans = res;
+                r = i;
+                ls = l;
+            }
+            
+            if(res &amp;lt; 0)
+            {
+                res = 0;
+                l = i+1;
+            }
+        }
+        
+        cout&amp;lt;&amp;lt;ans&amp;lt;&amp;lt;&#39; &#39;&amp;lt;&amp;lt;ls&amp;lt;&amp;lt;&#39; &#39;&amp;lt;&amp;lt;r&amp;lt;&amp;lt;endl;
+        if(i != t)   cout&amp;lt;&amp;lt;endl;
+    }
+    
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;d-最长上升子序列模板-hdu-1087&#34;&gt;D - （最长上升子序列模板） HDU - 1087&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;//注意题目的数据范围，可能会爆int
+
+# include&amp;lt;iostream&amp;gt;
+# include&amp;lt;algorithm&amp;gt;
+
+using namespace std;
+
+const long long N = 1100;
+
+long long n;
+long long a[N];
+long long dp[N];        //dp[i]是以第i个数字为结尾的最长上升子序列和
+
+int main()
+{
+    while(cin&amp;gt;&amp;gt;n, n)
+    {
+        for(long long i=1; i&amp;lt;=n; ++i)   cin&amp;gt;&amp;gt;a[i];
+        
+        for(long long i=1; i&amp;lt;=n; ++i)   dp[i] = a[i];      
+         //初始化，每个数都是一个子序列，每个格子的上升子序列的和都至少是自己
+        
+        for(long long i=1; i&amp;lt;=n; ++i)
+        {
+            for(long long j=1; j&amp;lt;i; ++j)
+            {
+                if(a[j] &amp;lt; a[i])   dp[i] = max(dp[i], dp[j]+a[i]);
+                //如果j到i是上升子序列，那么取最值
+            }
+        }
+        
+        //根据定义的dp数组的含义，求出最值
+        //注意：拥有最大和的上升子序列不一定是以原数组的最后一个数结尾，咱也不知道是以哪个数结尾，因此需遍历一遍整个数组，找出拥有最大和上升子序列
+        long long ans = -2e18;
+        for(long long i=1; i&amp;lt;=n; ++i)   ans = max(ans, dp[i]);
+        cout&amp;lt;&amp;lt;ans&amp;lt;&amp;lt;endl;
+    }
+    
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;f-最长上升子序列的优化-计蒜客-t2146&#34;&gt;F - （最长上升子序列的优化） 计蒜客 - T2146&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;//对于拦截的每一个导弹，都有两种选择
+//1. 使用之前的导弹拦截系统（前提是该导弹高度必须小于之前的导弹高度）
+//2. 在开一个新的导弹拦截系统
+
+# include&amp;lt;iostream&amp;gt;
+# include&amp;lt;algorithm&amp;gt;
+# include&amp;lt;cstring&amp;gt;
+
+using namespace std;
+
+const int N = 1e5+10;
+
+int n;
+int a[N];
+int dp[N];
+int f[N];
+
+int main()
+{
+    int cnt = 1;
+    while(cin&amp;gt;&amp;gt;a[cnt])  cnt++;          //  &amp;lt;cnt
+    cnt--;
+    
+    //最长下降子（非上升）序列
+    memset(dp, 0x3f, sizeof dp);
+    for(int i=cnt; i; --i)
+    {
+        int x = a[i];
+        int j = upper_bound(dp, dp+cnt, x)-dp;
+        dp[j] = x;
+    }
+    int res = 0;
+    while(dp[res]!=0x3f3f3f3f)   res++;
+    cout&amp;lt;&amp;lt;res&amp;lt;&amp;lt;endl;
+    
+    
+    //永远维护一个递增的序列
+    //贪心：能不创建新的导弹拦截系统就不创建新的导弹拦截系统
+    memset(f, 0x3f, sizeof f);
+    
+    for(int i=1; i&amp;lt;=cnt; ++i)
+    {
+        int x = a[i];
+        int j = lower_bound(f, f+cnt, x)-f;
+        f[j] = x;
+    }
+    res = 0;
+    while(f[res]!=0x3f3f3f3f)   res++;
+    cout&amp;lt;&amp;lt;res&amp;lt;&amp;lt;endl;
+    
+    return 0;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;g-数字三角形的变形-计蒜客-t2153&#34;&gt;G - （数字三角形的变形） 计蒜客 - T2153&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.acwing.com/problem/content/solution/1029/1/&#34;&gt;他山之玉&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# include&amp;lt;iostream&amp;gt;
+# include&amp;lt;algorithm&amp;gt;
+
+using namespace std;
+
+const int N = 30;
+
+int n;
+int dp[N&amp;lt;&amp;lt;1][N][N];     //总坐标是i，a的横坐标是j，b的横坐标是k
+int g[N][N];
+
+int main()
+{
+    cin&amp;gt;&amp;gt;n;
+    int a, b, c;
+    while(cin&amp;gt;&amp;gt;a&amp;gt;&amp;gt;b&amp;gt;&amp;gt;c, a||b||c)   g[a][b] = c;
+    
+    for(int i=2; i&amp;lt;=(n&amp;lt;&amp;lt;1); ++i)
+    {
+        for(int j=1; j&amp;lt;=n; ++j)
+        {
+            for(int k=1; k&amp;lt;=n; ++k)
+            {
+                if(j&amp;gt;=i || k&amp;gt;=i)   continue;
+                if(j==k)
+                {
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k]+g[j][i-j]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k-1]+g[j][i-j]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k]+g[j][i-j]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k-1]+g[j][i-j]);
+                }
+                else
+                {
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k]+g[j][i-j]+g[k][i-k]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k-1]+g[j][i-j]+g[k][i-k]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k]+g[j][i-j]+g[k][i-k]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k-1]+g[j][i-j]+g[k][i-k]);
+                }
+            }
+        }
+    }
+    
+    cout&amp;lt;&amp;lt;dp[n&amp;lt;&amp;lt;1][n][n]&amp;lt;&amp;lt;endl;
+    
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;h-用一下逆向思维写法同上-计蒜客-t2091&#34;&gt;H - （用一下逆向思维，写法同上） 计蒜客 - T2091&lt;/h3&gt;
+">HUEL_ACM第二学期第六周：线性DP</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://panker13.github.io/post/html-chang-jian-biao-qian/"" data-c="
+          &lt;h3 id=&#34;aa&#34;&gt;&lt;a&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;a&amp;gt;是超链接标签，主要用于链接到另一个页面上&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;其主要属性有：herf, target, title&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;herf属性：a&amp;gt;标签最重要的标签，作用：规定页面指向的URL（统一资源定位器）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;关于URL：   URL指的是统一资源定位符（Uniform Resource Locator）。&lt;br&gt;
+URL无非就是一个给定的独特资源在Web上的地址。理论上说，每个有效的URL都指向一个独特的资源。这个资源可以是一个HTML页面，一个CSS文档，一幅图像，等等。而在实际中，有一些例外，最常见的情况就是URL指向了不存在的或是被移动过的资源。由于通过URL呈现的资源和URL本身由Web服务器处理，因此web服务器的拥有者需要认真地维护资源以及与它关联的URL。&lt;br&gt;
+作为一个小白，看到这个高级的专业词汇时，我是懵的，经过各方面搜索后，终于有了一点点认识，不容易！！&lt;br&gt;
+我浅显的把它理解为——网址（不是我，是我抄的博客）&lt;br&gt;
+示例：https://www.acwing.com/activity/content/21/&lt;br&gt;
+下面来分析一下它的几个部分：&lt;br&gt;
+1、http:// ——HTTP协议（超文本转移协议），当然也可以是其他协议。（https是一种更加安全的传输协议）&lt;br&gt;
+2、www.baidu.com ——域名，表明在访问哪个服务器，当然也可以用IP地址代替。&lt;br&gt;
+（其中www是指一个特定的服务器（万维网）），acwing.com是域名&lt;br&gt;
+3、:80 —— 端口，用于访问Web服务器上的资源的技术“门”。（默认80，可能不写）&lt;br&gt;
+4、/path/to/myfile.html —— 网络服务器上资源的路径（从根文件夹到这个资源的绝对路径）。&lt;br&gt;
+5、?key1=value1&amp;amp;key2=value2 —— 提供给网络服务器的额外参数。这些参数用&amp;amp;分隔开。&lt;br&gt;
+6、#SomewhereInTheDocument —— 资源本身的另一部分的锚点，锚点像一个迅速定位器一样，可以在网页中设置标记，然后创建链接，创建的链接可以使我们迅速访问到指定位置（想到了书签~~）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;target属性：规定在何处打开链接文档。它有五个选项：&lt;br&gt;
+　    _blank：在新窗口中打开被链接文档。&lt;br&gt;
+　　_self：默认。在相同的框架中打开被链接文档。&lt;br&gt;
+　　_parent：在父框架集中打开被链接文档。&lt;br&gt;
+　　_top：在整个窗口中打开被链接文档。&lt;br&gt;
+　　framename：在指定的框架中打开被链接文档。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;title属性：一般用作给该元素加一个工具提示&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+">HTML常见标签</a>
+      </div>
+      
+      <div class="item">
         <a class="result-title" style="opacity: 0;" href="https://panker13.github.io/post/about/"" data-c="
           &lt;blockquote&gt;
 &lt;p&gt;欢迎来到我的小站呀，很高兴遇见你！🤝&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;关于本站&#34;&gt;🏠 关于本站&lt;/h2&gt;
-&lt;h4 id=&#34;是一个塑料杯子似的小屋哈哈也是panker的第一个个人博客&#34;&gt;是一个塑料杯子似的小屋，哈哈，也是panker的第一个个人博客😜&lt;/h4&gt;
+&lt;h4 id=&#34;&#34;&gt;&lt;/h4&gt;
 &lt;h2 id=&#34;博主是谁&#34;&gt;👨‍💻 博主是谁&lt;/h2&gt;
-&lt;h4 id=&#34;hello我是panker目前就读与某财经政法大学的软件工程大一&#34;&gt;hello，我是panker，目前就读与某财经政法大学的软件工程（大一）🤓&lt;/h4&gt;
+&lt;h4 id=&#34;-2&#34;&gt;&lt;/h4&gt;
 &lt;h2 id=&#34;兴趣爱好&#34;&gt;⛹ 兴趣爱好&lt;/h2&gt;
-&lt;h4 id=&#34;睡觉还有说唱收集看番看电影等等-其实有许多爱好啦但除了睡觉大多都浅尝辄止&#34;&gt;睡觉😴，还有说唱，收集，看番，看电影等等。。。其实有许多爱好啦，但除了睡觉，大多都浅尝辄止&lt;/h4&gt;
+&lt;h4 id=&#34;-3&#34;&gt;&lt;/h4&gt;
 &lt;h2 id=&#34;联系我呀&#34;&gt;📬 联系我呀&lt;/h2&gt;
 &lt;h4 id=&#34;哈哈哈&#34;&gt;哈哈哈👀&lt;/h4&gt;
 ">关于</a>
@@ -2180,7 +2471,5 @@ int main()
 
 
 
-
-<script src="https://cdn.jsdelivr.net/gh/lete114/CDN/Sum/sakura.js"></script>
 
 </html>

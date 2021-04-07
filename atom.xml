@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://panker13.github.io</id>
     <title>Panker</title>
-    <updated>2021-03-26T04:54:23.107Z</updated>
+    <updated>2021-04-07T13:37:20.372Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://panker13.github.io"/>
     <link rel="self" href="https://panker13.github.io/atom.xml"/>
@@ -10,6 +10,303 @@
     <logo>https://panker13.github.io/images/avatar.png</logo>
     <icon>https://panker13.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Panker</rights>
+    <entry>
+        <title type="html"><![CDATA[HUEL_ACM第二学期第六周：线性DP]]></title>
+        <id>https://panker13.github.io/post/huel_acm-di-er-xue-qi-di-liu-zhou-xian-xing-dp/</id>
+        <link href="https://panker13.github.io/post/huel_acm-di-er-xue-qi-di-liu-zhou-xian-xing-dp/">
+        </link>
+        <updated>2021-04-07T12:59:08.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="a-最长公共子序列模板-poj-1458">A - （最长公共子序列模板） POJ - 1458</h3>
+<pre><code># include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+# include&lt;cstring&gt;
+
+using namespace std;
+
+const int N = 555;
+
+char a[N], b[N];
+
+int main()
+{
+    while(cin&gt;&gt;a+1&gt;&gt;b+1)            //读入字符串a，b
+    {
+        int dp[N][N];                       //定义答案数组dp
+        //dp[i][j]是字串a的前i个字符与字串b的前j个字符的最长公共子序列
+        
+        int n = strlen(a+1), m = strlen(b+1);
+        
+        for(int i=1; i&lt;=n; ++i)
+        {
+            for(int j=1; j&lt;=m; ++j)
+            {
+                dp[i][j] = max(dp[i][j-1], dp[i-1][j]);     
+                //如果两个字串最后一个数不相同，就取它们之前的最长公共子序列
+
+                if(a[i]==b[j])   dp[i][j] = max(dp[i][j], dp[i-1][j-1]+1);
+                //如果最后两个字串的最后一个数相同，最长公共子序列可能为a前i-1个字符与b的前j-1个字符的最长公共子序列再+1
+            }
+        }
+        
+        cout&lt;&lt;dp[n][m]&lt;&lt;endl;           //根据定义，输出答案
+    }
+    
+    return 0;
+}
+</code></pre>
+<h3 id="b-思维-hdu-1003">B - （思维？） HDU - 1003</h3>
+<p>主要思想：如果当前连续子序列的值为正值，那么无论它再加任何数，其总值都会大于它要加的数；如果当前连续子序列的值为负数，那么无论它再加任何数，其总值都会小于它要加的数。因此只有当当前子序列为正值的时候，该连续子序列的值才有可能增加，若为负数，则一定减小。所有当连续子序列的值为负数时，及时舍去该序列，重新再开一段序列（新序列的初始总值为0）</p>
+<pre><code># include&lt;iostream&gt;
+# include&lt;cstring&gt;
+
+using namespace std;
+
+const int N = 1e5+10;
+
+struct Num
+{
+    int num, val;
+}mini;
+
+int t;
+int a[N], s[N];
+
+int main()
+{
+    cin&gt;&gt;t;
+    for(int i=1; i&lt;=t; ++i)
+    {
+        memset(a, 0, sizeof a);
+        memset(s, 0, sizeof s);
+        
+        cout&lt;&lt;&quot;Case &quot;&lt;&lt;i&lt;&lt;&quot;:&quot;&lt;&lt;endl;
+        int n;
+        cin&gt;&gt;n;
+    
+        for(int i=1; i&lt;=n; ++i)   cin&gt;&gt;a[i];
+        
+        int l = 1, r = 1, ls = 1;
+        int ans = -2e9, res = 0;
+        for(int i=1; i&lt;=n; ++i)
+        {
+            res += a[i];
+            
+            if(res &gt; ans)
+            {
+                ans = res;
+                r = i;
+                ls = l;
+            }
+            
+            if(res &lt; 0)
+            {
+                res = 0;
+                l = i+1;
+            }
+        }
+        
+        cout&lt;&lt;ans&lt;&lt;' '&lt;&lt;ls&lt;&lt;' '&lt;&lt;r&lt;&lt;endl;
+        if(i != t)   cout&lt;&lt;endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+<h3 id="d-最长上升子序列模板-hdu-1087">D - （最长上升子序列模板） HDU - 1087</h3>
+<pre><code>//注意题目的数据范围，可能会爆int
+
+# include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+
+using namespace std;
+
+const long long N = 1100;
+
+long long n;
+long long a[N];
+long long dp[N];        //dp[i]是以第i个数字为结尾的最长上升子序列和
+
+int main()
+{
+    while(cin&gt;&gt;n, n)
+    {
+        for(long long i=1; i&lt;=n; ++i)   cin&gt;&gt;a[i];
+        
+        for(long long i=1; i&lt;=n; ++i)   dp[i] = a[i];      
+         //初始化，每个数都是一个子序列，每个格子的上升子序列的和都至少是自己
+        
+        for(long long i=1; i&lt;=n; ++i)
+        {
+            for(long long j=1; j&lt;i; ++j)
+            {
+                if(a[j] &lt; a[i])   dp[i] = max(dp[i], dp[j]+a[i]);
+                //如果j到i是上升子序列，那么取最值
+            }
+        }
+        
+        //根据定义的dp数组的含义，求出最值
+        //注意：拥有最大和的上升子序列不一定是以原数组的最后一个数结尾，咱也不知道是以哪个数结尾，因此需遍历一遍整个数组，找出拥有最大和上升子序列
+        long long ans = -2e18;
+        for(long long i=1; i&lt;=n; ++i)   ans = max(ans, dp[i]);
+        cout&lt;&lt;ans&lt;&lt;endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+<h3 id="f-最长上升子序列的优化-计蒜客-t2146">F - （最长上升子序列的优化） 计蒜客 - T2146</h3>
+<pre><code>//对于拦截的每一个导弹，都有两种选择
+//1. 使用之前的导弹拦截系统（前提是该导弹高度必须小于之前的导弹高度）
+//2. 在开一个新的导弹拦截系统
+
+# include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+# include&lt;cstring&gt;
+
+using namespace std;
+
+const int N = 1e5+10;
+
+int n;
+int a[N];
+int dp[N];
+int f[N];
+
+int main()
+{
+    int cnt = 1;
+    while(cin&gt;&gt;a[cnt])  cnt++;          //  &lt;cnt
+    cnt--;
+    
+    //最长下降子（非上升）序列
+    memset(dp, 0x3f, sizeof dp);
+    for(int i=cnt; i; --i)
+    {
+        int x = a[i];
+        int j = upper_bound(dp, dp+cnt, x)-dp;
+        dp[j] = x;
+    }
+    int res = 0;
+    while(dp[res]!=0x3f3f3f3f)   res++;
+    cout&lt;&lt;res&lt;&lt;endl;
+    
+    
+    //永远维护一个递增的序列
+    //贪心：能不创建新的导弹拦截系统就不创建新的导弹拦截系统
+    memset(f, 0x3f, sizeof f);
+    
+    for(int i=1; i&lt;=cnt; ++i)
+    {
+        int x = a[i];
+        int j = lower_bound(f, f+cnt, x)-f;
+        f[j] = x;
+    }
+    res = 0;
+    while(f[res]!=0x3f3f3f3f)   res++;
+    cout&lt;&lt;res&lt;&lt;endl;
+    
+    return 0;
+}
+
+</code></pre>
+<h3 id="g-数字三角形的变形-计蒜客-t2153">G - （数字三角形的变形） 计蒜客 - T2153</h3>
+<p><a href="https://www.acwing.com/problem/content/solution/1029/1/">他山之玉</a></p>
+<pre><code># include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+
+using namespace std;
+
+const int N = 30;
+
+int n;
+int dp[N&lt;&lt;1][N][N];     //总坐标是i，a的横坐标是j，b的横坐标是k
+int g[N][N];
+
+int main()
+{
+    cin&gt;&gt;n;
+    int a, b, c;
+    while(cin&gt;&gt;a&gt;&gt;b&gt;&gt;c, a||b||c)   g[a][b] = c;
+    
+    for(int i=2; i&lt;=(n&lt;&lt;1); ++i)
+    {
+        for(int j=1; j&lt;=n; ++j)
+        {
+            for(int k=1; k&lt;=n; ++k)
+            {
+                if(j&gt;=i || k&gt;=i)   continue;
+                if(j==k)
+                {
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k]+g[j][i-j]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k-1]+g[j][i-j]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k]+g[j][i-j]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k-1]+g[j][i-j]);
+                }
+                else
+                {
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k]+g[j][i-j]+g[k][i-k]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k-1]+g[j][i-j]+g[k][i-k]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k]+g[j][i-j]+g[k][i-k]);
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k-1]+g[j][i-j]+g[k][i-k]);
+                }
+            }
+        }
+    }
+    
+    cout&lt;&lt;dp[n&lt;&lt;1][n][n]&lt;&lt;endl;
+    
+    return 0;
+}
+</code></pre>
+<h3 id="h-用一下逆向思维写法同上-计蒜客-t2091">H - （用一下逆向思维，写法同上） 计蒜客 - T2091</h3>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HTML常见标签]]></title>
+        <id>https://panker13.github.io/post/html-chang-jian-biao-qian/</id>
+        <link href="https://panker13.github.io/post/html-chang-jian-biao-qian/">
+        </link>
+        <updated>2021-04-02T12:56:09.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="aa"><a></a></h3>
+<ol>
+<li>
+<p>a&gt;是超链接标签，主要用于链接到另一个页面上</p>
+</li>
+<li>
+<p>其主要属性有：herf, target, title</p>
+</li>
+<li>
+<p>herf属性：a&gt;标签最重要的标签，作用：规定页面指向的URL（统一资源定位器）</p>
+</li>
+<li>
+<p>关于URL：   URL指的是统一资源定位符（Uniform Resource Locator）。<br>
+URL无非就是一个给定的独特资源在Web上的地址。理论上说，每个有效的URL都指向一个独特的资源。这个资源可以是一个HTML页面，一个CSS文档，一幅图像，等等。而在实际中，有一些例外，最常见的情况就是URL指向了不存在的或是被移动过的资源。由于通过URL呈现的资源和URL本身由Web服务器处理，因此web服务器的拥有者需要认真地维护资源以及与它关联的URL。<br>
+作为一个小白，看到这个高级的专业词汇时，我是懵的，经过各方面搜索后，终于有了一点点认识，不容易！！<br>
+我浅显的把它理解为——网址（不是我，是我抄的博客）<br>
+示例：https://www.acwing.com/activity/content/21/<br>
+下面来分析一下它的几个部分：<br>
+1、http:// ——HTTP协议（超文本转移协议），当然也可以是其他协议。（https是一种更加安全的传输协议）<br>
+2、www.baidu.com ——域名，表明在访问哪个服务器，当然也可以用IP地址代替。<br>
+（其中www是指一个特定的服务器（万维网）），acwing.com是域名<br>
+3、:80 —— 端口，用于访问Web服务器上的资源的技术“门”。（默认80，可能不写）<br>
+4、/path/to/myfile.html —— 网络服务器上资源的路径（从根文件夹到这个资源的绝对路径）。<br>
+5、?key1=value1&amp;key2=value2 —— 提供给网络服务器的额外参数。这些参数用&amp;分隔开。<br>
+6、#SomewhereInTheDocument —— 资源本身的另一部分的锚点，锚点像一个迅速定位器一样，可以在网页中设置标记，然后创建链接，创建的链接可以使我们迅速访问到指定位置（想到了书签~~）</p>
+</li>
+<li>
+<p>target属性：规定在何处打开链接文档。它有五个选项：<br>
+　    _blank：在新窗口中打开被链接文档。<br>
+　　_self：默认。在相同的框架中打开被链接文档。<br>
+　　_parent：在父框架集中打开被链接文档。<br>
+　　_top：在整个窗口中打开被链接文档。<br>
+　　framename：在指定的框架中打开被链接文档。</p>
+</li>
+<li>
+<p>title属性：一般用作给该元素加一个工具提示</p>
+</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://panker13.github.io/post/hello-gridea/</id>
