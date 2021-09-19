@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://panker13.github.io</id>
     <title>Panker</title>
-    <updated>2021-04-07T13:37:45.208Z</updated>
+    <updated>2021-09-19T02:49:03.347Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://panker13.github.io"/>
     <link rel="self" href="https://panker13.github.io/atom.xml"/>
@@ -10,6 +10,231 @@
     <logo>https://panker13.github.io/images/avatar.png</logo>
     <icon>https://panker13.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Panker</rights>
+    <entry>
+        <title type="html"><![CDATA[13届河南省省赛]]></title>
+        <id>https://panker13.github.io/post/13-jie-he-nan-sheng-sheng-sai/</id>
+        <link href="https://panker13.github.io/post/13-jie-he-nan-sheng-sheng-sai/">
+        </link>
+        <updated>2021-05-23T11:41:32.000Z</updated>
+        <content type="html"><![CDATA[<pre><code class="language-cpp">13届河南省省赛I题（dfs）
+
+# include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+# include&lt;string&gt;
+# include&lt;cstring&gt;
+
+using namespace std;
+
+int a[10];
+int g[10];
+
+int to1(int i)
+{
+    return (i+2)%8+1;
+}
+
+int to2(int i)
+{
+    return (i+4)%8+1;
+}
+
+bool dfs(int x, int num)
+{
+    g[x] = 1;
+    if(num==8)
+    {
+        return true;
+    }
+    
+    for(int i=1; i&lt;=8; ++i)
+    {
+        if(!g[i])
+        {
+            if(g[to1(i)])   return false;
+            else   return dfs(g[to1(i)], num+1);
+            
+            if(g[to2(i)])   return false;
+            else   return dfs(g[to2(i)], num+1);
+        }
+    }
+}
+
+int main()
+{
+    int t;
+    cin&gt;&gt;t;
+    
+    while(t--)
+    {
+        int num = 0;
+        bool cha = false;
+        string s;
+        cin&gt;&gt;s;
+        for(int i=0; i&lt;8; ++i)
+            if(s[i]=='1')
+            {
+                num++;
+                a[i+1] = 1;
+            }
+            else   a[i+1] = 0;
+        
+        if(num==8)
+        {
+            cout&lt;&lt;&quot;Yes&quot;&lt;&lt;endl;
+            continue;
+        }
+        
+        for(int i=1; i&lt;=8; ++i)
+        {
+            memcpy(g, a, sizeof a);
+            
+            if(!g[i])
+            {
+                if(g[to1(i)])   continue;
+                else
+                {
+                    if(dfs(g[to1(i)], num+1))
+                        cha = true;
+                }
+                
+                if(g[to2(i)])   continue;
+                else
+                {
+                    if(dfs(g[to2(i)], num+1))
+                        cha = true;
+                }
+                
+                if(cha)   break;
+            }
+        }
+    
+        if(cha)   cout&lt;&lt;&quot;Yes&quot;&lt;&lt;endl;
+        else   cout&lt;&lt;&quot;No&quot;&lt;&lt;endl;
+    }
+    
+    return 0;
+}
+</code></pre>
+<pre><code class="language-cpp">//L题
+# include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+
+using namespace std;
+
+bool ck(double a, double b, double x, double y)
+{
+    if(b*b*x*x + a*a*y*y &lt;= a*a*b*b)   return true;
+    else   return false;
+}
+
+int main()
+{
+    int t;
+    cin&gt;&gt;t;
+    
+    while(t--)
+    {
+        double cnt = 0, num = 0;
+        double a1, b1, a2, b2;
+        cin&gt;&gt;a1&gt;&gt;b1&gt;&gt;a2&gt;&gt;b2;
+        
+        for(double i=-8; i&lt;=8; i+=0.005)
+            for(double j=-8; j&lt;=8; j+=0.005)
+            {
+                if(ck(a1, b1, i, j) || ck(a2, b2, i, j))   cnt++;
+                num++;
+            }
+        
+        double ans = cnt*1.0/40000*1.0;
+        
+        printf(&quot;%.1f\n&quot;, ans);
+    }
+    
+    return 0;
+}
+</code></pre>
+<p>J题：甜甜圈</p>
+<pre><code class="language-cpp"># include&lt;iostream&gt;
+# include&lt;algorithm&gt;
+# include&lt;cmath&gt;
+
+using namespace std;
+
+const int N = 1e5+10;
+
+struct Range
+{
+    int val, num;
+    bool operator&lt; (const Range &amp;w)const
+    {
+        return val &gt; w.val;
+    }
+}range[N];
+
+int n, m;
+int a1[N], a2[N], b[N];
+int tr[N];
+
+int lowbit(int x)
+{
+    return x &amp; -x;
+}
+
+void modify(int x, int v)
+{
+    for(int i=x; i&lt;=N; i+=lowbit(i))   tr[i] += v;
+}
+
+int query(int x)
+{
+    int res = 0;
+    for(int i=x; i; i-=lowbit(i))   res += tr[i];
+    return res;
+}
+
+int main()
+{
+    cin&gt;&gt;n&gt;&gt;m;
+    for(int i=1; i&lt;=n+m; ++i)   modify(i, 1);
+    for(int i=1; i&lt;=n; ++i)   cin&gt;&gt;a1[i];
+    for(int i=1; i&lt;=m; ++i)
+    {
+        cin&gt;&gt;a2[i];
+        range[i] = {a2[i], i};
+    }
+    
+    for(int i=n, j=m+1; i; --i, ++j)
+        range[j] = {a1[i], j};
+    
+    sort(range+1, range+n+m+1);
+    
+    int l, r;
+    int xx = range[1].num;
+    if(xx&gt;m)   r = m;
+    else   r = m+1;
+    
+    int ans = 0;
+    for(int i=1; i&lt;=n+m; ++i)
+    {
+        int x = range[i].num;
+        l = r, r = x;
+        
+        // cout&lt;&lt;l&lt;&lt;' '&lt;&lt;r&lt;&lt;endl;
+        
+        modify(r, -1);
+        int res = abs(query(r)-query(l));
+        // cout&lt;&lt;res&lt;&lt;endl;
+        ans += res;
+        
+    }
+    // cout&lt;&lt;endl;
+    cout&lt;&lt;ans&lt;&lt;endl;
+    
+    return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[HUEL_ACM第二学期第六周：线性DP]]></title>
         <id>https://panker13.github.io/post/huel_acm-di-er-xue-qi-di-liu-zhou-xian-xing-dp/</id>
