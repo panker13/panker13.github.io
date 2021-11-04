@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://localhost:4000</id>
     <title>Panker</title>
-    <updated>2021-11-04T12:21:09.596Z</updated>
+    <updated>2021-11-04T12:36:22.906Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://localhost:4000"/>
     <link rel="self" href="http://localhost:4000/atom.xml"/>
@@ -10,6 +10,26 @@
     <logo>http://localhost:4000/images/avatar.png</logo>
     <icon>http://localhost:4000/favicon.ico</icon>
     <rights>All rights reserved 2021, Panker</rights>
+    <entry>
+        <title type="html"><![CDATA[LanQiao]]></title>
+        <id>http://localhost:4000/post/lanqiao/</id>
+        <link href="http://localhost:4000/post/lanqiao/">
+        </link>
+        <updated>2021-11-04T12:06:34.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一-蓝桥杯赛事简介">一. <a href="https://dasai.lanqiao.cn/">蓝桥杯</a>赛事简介</h1>
+<p>蓝桥杯全国软件和信息技术专业人才大赛，是由<strong>工业和信息化部人才交流中心</strong>举办的全国性IT学科赛事。蓝桥杯也是一个<strong>编程和算法竞赛</strong>，考察的是参赛者的<strong>编程能力和算法功底</strong>。<strong>全国1200余所高校</strong>参赛，累计参赛人数超过<strong>40万</strong>人。蓝桥杯大赛连续两年被列入中国高等教育学会发布的“全国普通高校学科竞赛排行榜”，是高校教育教学改革和创新人才培养的重要竞赛项目。对大学生<strong>综合评测，奖学金评定，升学考研</strong>都有一定助益。</p>
+<p>大赛共包括三个竞赛组别，<strong>个人赛-软件类</strong>，个人赛-电子类，以及视觉艺术大赛。其中个人赛-软件类的比赛科目包括<strong>C/C++程序设计</strong>、Java软件开发、Python程序设计。今年第十二届蓝桥杯报名时间是<strong>2021年10月12日-2021年12月17日，4月省赛，5月国赛。</strong></p>
+<p>蓝桥杯大赛已成功举办12届，成为国内始终领跑的人才培养选拔模式，并受到行业和企业的高度认可，<strong>含金量也逐年增加</strong>，主要体现在：</p>
+<ul>
+<li>蓝桥杯大赛题目的专业度高，专业度和难度已经与国际国内知名程序设计类竞赛不相上下。</li>
+<li>双一流大学的参与度逐年提高，以最近的第11届蓝桥杯大赛为例，来自双一流大校的参赛选手近10000名；</li>
+<li>专业顶尖选手越来越多，对历年选手的跟踪回访，发现大赛选手与ACM参赛选手高度重叠，可谓赢家通吃。</li>
+</ul>
+<h1 id="二-蓝桥杯的比赛形式">二. 蓝桥杯的比赛形式</h1>
+<p>蓝桥杯为<strong>个人赛</strong>，一共有<strong>十道题目</strong>，比赛<strong>时长为4个小时</strong>，<strong>题目难度顺序一般按照由易到难</strong>。前面几道题目一般是给出题面问一个特定的答案，只需要在本地计算然后提交答案。后面的题目就是需要提交代码，跑通给定的案例，也就是OJ的形式（是OI形式）。题目完全为客观题型，选手所提交作答的运行结果为主要评分依据，比赛不能携带纸质资料。<br>
+蓝桥杯的比赛组别分为：研究生组（研究生）、A组（985、211及以下）、<strong>B组</strong>（本科及以下）、C组（高职高专、中职中专）</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[13届河南省省赛]]></title>
         <id>http://localhost:4000/post/13-jie-he-nan-sheng-sheng-sai/</id>
